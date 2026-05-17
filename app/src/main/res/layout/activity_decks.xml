@@ -276,7 +276,12 @@
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="WHATSHOT" android:textSize="10sp"/>
         </LinearLayout>
 
-        <View android:layout_width="48dp" android:layout_height="48dp" android:background="@color/primary_green"/>
+        <View
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/circle_border_blue"
+            android:backgroundTint="#3370FD"
+            android:foreground="@android:drawable/ic_input_add" />
 
         <LinearLayout android:id="@+id/navStyle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
             <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_manage" app:tint="@color/primary_blue"/>
