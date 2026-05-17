@@ -13,6 +13,14 @@
         android:theme="@style/Theme.ULearnIt">
 
         <activity
+            android:name=".QuizActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ReviewerDetailActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".DecksActivity"
             android:exported="false" />
 

@@ -1,11 +1,11 @@
 package com.ulearnit.ulearnit;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.View;
 import android.widget.LinearLayout;
-import android.content.Intent;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class HomeDashboardActivity extends AppCompatActivity {
     @Override
@@ -21,6 +21,13 @@ public class HomeDashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(HomeDashboardActivity.this, ProfileActivity.class);
                 startActivity(intent);
+
+                // Remove the swipe animation immediately after starting the activity
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0);
+                } else {
+                    overridePendingTransition(0, 0);
+                }
             }
         });
 
@@ -29,6 +36,13 @@ public class HomeDashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(HomeDashboardActivity.this, DecksActivity.class);
                 startActivity(intent);
+
+                // Remove the swipe animation immediately after starting the activity
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                    overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0);
+                } else {
+                    overridePendingTransition(0, 0);
+                }
             }
         });
     }
