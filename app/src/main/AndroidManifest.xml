@@ -13,6 +13,10 @@
         android:theme="@style/Theme.ULearnIt">
 
         <activity
+            android:name=".ProgressActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".QuizActivity"
             android:exported="false" />
 

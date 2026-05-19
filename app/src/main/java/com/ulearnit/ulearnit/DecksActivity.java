@@ -134,28 +134,33 @@ public class DecksActivity extends AppCompatActivity {
     private void setupNavbar() {
         LinearLayout navHome = findViewById(R.id.navHome);
         LinearLayout navProfile = findViewById(R.id.navProfile);
+        LinearLayout navWhatshot = findViewById(R.id.navWhatshot);
 
         navHome.setOnClickListener(v -> {
             Intent intent = new Intent(DecksActivity.this, HomeDashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0);
-            } else {
-                overridePendingTransition(0, 0);
-            }
+            overrideTransition();
         });
 
         navProfile.setOnClickListener(v -> {
             Intent intent = new Intent(DecksActivity.this, ProfileActivity.class);
             startActivity(intent);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0);
-            } else {
-                overridePendingTransition(0, 0);
-            }
+            overrideTransition();
         });
+
+        navWhatshot.setOnClickListener(v -> {
+            Intent intent = new Intent(DecksActivity.this, ProgressActivity.class);
+            startActivity(intent);
+            overrideTransition();
+        });
+    }
+
+    private void overrideTransition() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, 0, 0);
+        } else {
+            overridePendingTransition(0, 0);
+        }
     }
 }

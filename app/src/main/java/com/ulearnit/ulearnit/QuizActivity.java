@@ -158,7 +158,7 @@ public class QuizActivity extends AppCompatActivity {
 
         new AlertDialog.Builder(this)
                 .setTitle("Quiz Completed!")
-                .setMessage(String.format(Locale.getDefault(), "You scored %d out of %d (%d%%)", score, flashcardList.size(), percentage))
+                .setMessage(String.format(Locale.getDefault(), "You scored %d out of %d", score, flashcardList.size(), percentage))
                 .setPositiveButton("OK", (dialog, which) -> finish())
                 .setCancelable(false)
                 .show();
@@ -169,14 +169,19 @@ public class QuizActivity extends AppCompatActivity {
         if (deckTitle != null) {
             android.content.SharedPreferences prefs = getSharedPreferences("ULearnItPrefs", MODE_PRIVATE);
             android.content.SharedPreferences.Editor editor = prefs.edit();
-            String key = deckTitle + "_mastery";
             
-            // Optional: Save only if it's a new high score
+            // Save mastery for the specific deck
+            String key = deckTitle + "_mastery";
             int currentMastery = prefs.getInt(key, 0);
             if (percentage > currentMastery) {
                 editor.putInt(key, percentage);
-                editor.apply();
             }
+            
+            // Save as the most recent deck
+            editor.putString("recent_deck_title", deckTitle);
+            editor.putInt("recent_deck_percent", percentage);
+            
+            editor.apply();
         }
     }
 }

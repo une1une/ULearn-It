@@ -29,13 +29,6 @@
                     android:textSize="28sp"
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentEnd="true"
-                    android:background="@drawable/social_icon_bg"
-                    android:padding="8dp"
-                    android:src="@android:drawable/ic_menu_sort_by_size"/>
             </RelativeLayout>
 
             <!-- Search Bar -->
@@ -71,44 +64,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="✓ All Decks"
-                        android:textColor="@color/white"
-                        android:background="@drawable/rounded_chip_blue"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="8dp"
-                        android:textStyle="bold"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Biology"
-                        android:textColor="@color/black"
-                        android:background="@drawable/rounded_chip_white"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="8dp"
-                        android:layout_marginStart="10dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Geography"
-                        android:textColor="@color/black"
-                        android:background="@drawable/rounded_chip_white"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="8dp"
-                        android:layout_marginStart="10dp"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Astronomy"
-                        android:textColor="@color/black"
-                        android:background="@drawable/rounded_chip_white"
-                        android:paddingHorizontal="16dp"
-                        android:paddingVertical="8dp"
-                        android:layout_marginStart="10dp"/>
-                </LinearLayout>
+                    android:orientation="horizontal"/>
             </HorizontalScrollView>
 
             <!-- Decks List -->
@@ -153,7 +109,7 @@
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="HOME" android:textSize="10sp" android:textColor="@color/gray_text"/>
         </LinearLayout>
 
-        <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+        <LinearLayout android:id="@+id/navWhatshot" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
             <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_compass"/>
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="WHATSHOT" android:textSize="10sp"/>
         </LinearLayout>

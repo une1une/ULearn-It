@@ -6,4 +6,8 @@
     </style>
 
     <style name="Theme.ULearnIt" parent="Base.Theme.ULearnIt" />
+
+    <style name="CircleImage">
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>
