@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,6 +31,7 @@ public class DecksActivity extends AppCompatActivity {
     private DeckAdapter adapter;
     private ArrayList<DeckModel> deckList;
     private Button btnCreateDeck;
+    private EditText etSearchDecks;
 
     private static final String PREFS_NAME = "ULearnItPrefs";
     private static final String DECKS_KEY = "UserDecks";
@@ -38,12 +41,30 @@ public class DecksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_decks);
 
+        // 1. Initialize Views
         rvDecks = findViewById(R.id.recyclerViewDecks);
         btnCreateDeck = findViewById(R.id.btnCreateDeck);
+        etSearchDecks = findViewById(R.id.etSearchDecks);
 
+        // 2. Initialize Empty List
+        deckList = new ArrayList<>();
+        adapter = new DeckAdapter(deckList);
         rvDecks.setLayoutManager(new LinearLayoutManager(this));
+        rvDecks.setAdapter(adapter);
 
+        // 3. Listeners
         btnCreateDeck.setOnClickListener(v -> showCreateDeckDialog());
+
+        etSearchDecks.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
 
         setupNavbar();
     }
@@ -52,20 +73,26 @@ public class DecksActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         SessionManager.startSession();
-        loadDecks();
-        adapter = new DeckAdapter(deckList);
-        rvDecks.setAdapter(adapter);
-
+        
+        // 4. Load real data and refresh UI
+        loadDecksFromStorage();
+        
         adapter.setOnItemClickListener(deck -> {
             Intent intent = new Intent(DecksActivity.this, ReviewerDetailActivity.class);
             intent.putExtra("DECK_TITLE", deck.getTitle());
             startActivity(intent);
         });
 
-        // Check for shortcut trigger
+        // 5. Shortcut logic
         if (getIntent().getBooleanExtra("OPEN_CREATE_DIALOG", false)) {
             showCreateDeckDialog();
             getIntent().removeExtra("OPEN_CREATE_DIALOG");
+        }
+
+        // Re-apply filter if text exists
+        String query = etSearchDecks.getText().toString();
+        if (!query.isEmpty()) {
+            filter(query);
         }
     }
 
@@ -75,43 +102,57 @@ public class DecksActivity extends AppCompatActivity {
         SessionManager.endSession(this);
     }
 
-    private void loadDecks() {
+    private void loadDecksFromStorage() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String json = prefs.getString(DECKS_KEY, null);
         Gson gson = new Gson();
-        if (json == null) {
-            deckList = new ArrayList<>();
+        
+        ArrayList<DeckModel> loadedList;
+        if (json == null || json.isEmpty()) {
+            loadedList = new ArrayList<>();
         } else {
             Type type = new TypeToken<ArrayList<DeckModel>>() {}.getType();
-            deckList = gson.fromJson(json, type);
+            loadedList = gson.fromJson(json, type);
             
-            // Update dynamic card count for each deck
-            for (DeckModel deck : deckList) {
+            for (DeckModel deck : loadedList) {
+                // Update dynamic counts
                 String flashcardsKey = "_flashcards_" + deck.getTitle();
                 String flashcardsJson = prefs.getString(flashcardsKey, null);
                 if (flashcardsJson != null) {
-                    Type flashcardsType = new TypeToken<ArrayList<FlashcardModel>>() {}.getType();
-                    ArrayList<FlashcardModel> flashcards = gson.fromJson(flashcardsJson, flashcardsType);
+                    Type fType = new TypeToken<ArrayList<FlashcardModel>>() {}.getType();
+                    ArrayList<FlashcardModel> flashcards = gson.fromJson(flashcardsJson, fType);
                     deck.setCardCount(flashcards != null ? flashcards.size() : 0);
                 } else {
                     deck.setCardCount(0);
                 }
 
-                // Fetch saved mastery percentage
                 String masteryKey = deck.getTitle() + "_mastery";
-                int savedMastery = prefs.getInt(masteryKey, 0);
-                deck.setProgress(savedMastery);
+                deck.setProgress(prefs.getInt(masteryKey, 0));
             }
         }
+        
+        deckList.clear();
+        deckList.addAll(loadedList);
+        adapter.notifyDataSetChanged();
     }
 
-    private void saveDecks() {
+    private void saveDecksToStorage() {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         Gson gson = new Gson();
         String json = gson.toJson(deckList);
         editor.putString(DECKS_KEY, json);
         editor.apply();
+    }
+
+    private void filter(String text) {
+        ArrayList<DeckModel> filteredList = new ArrayList<>();
+        for (DeckModel deck : deckList) {
+            if (deck.getTitle().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(deck);
+            }
+        }
+        adapter.filterList(filteredList);
     }
 
     private void showCreateDeckDialog() {
@@ -136,16 +177,20 @@ public class DecksActivity extends AppCompatActivity {
             }
         });
         builder.setNegativeButton("Cancel", null);
-
         builder.show();
     }
 
     private void addNewDeck(String name) {
+        // Load latest list first to prevent overwriting
+        loadDecksFromStorage();
+        
         DeckModel newDeck = new DeckModel(name, 0, 0, android.R.drawable.ic_menu_help, Color.parseColor("#E3F2FD"), Color.parseColor("#3371FF"));
         deckList.add(newDeck);
-        saveDecks();
-        adapter.notifyItemInserted(deckList.size() - 1);
+        saveDecksToStorage();
+        
+        adapter.notifyDataSetChanged();
         rvDecks.smoothScrollToPosition(deckList.size() - 1);
+        filter(etSearchDecks.getText().toString());
     }
 
     private void setupNavbar() {
@@ -155,21 +200,19 @@ public class DecksActivity extends AppCompatActivity {
         View btnNavAdd = findViewById(R.id.btnNavAdd);
 
         navHome.setOnClickListener(v -> {
-            Intent intent = new Intent(DecksActivity.this, HomeDashboardActivity.class);
+            Intent intent = new Intent(this, HomeDashboardActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
             overrideTransition();
         });
 
         navProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(DecksActivity.this, ProfileActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, ProfileActivity.class));
             overrideTransition();
         });
 
         navWhatshot.setOnClickListener(v -> {
-            Intent intent = new Intent(DecksActivity.this, ProgressActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, ProgressActivity.class));
             overrideTransition();
         });
 

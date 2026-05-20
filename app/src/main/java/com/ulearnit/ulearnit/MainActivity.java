@@ -36,10 +36,19 @@ public class MainActivity extends AppCompatActivity {
                 if (email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Please enter email and password", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Navigate to Home Dashboard
-                    Intent intent = new Intent(MainActivity.this, HomeDashboardActivity.class);
-                    startActivity(intent);
-                    finish(); // Optional: Close Login screen
+                    // Load saved credentials
+                    android.content.SharedPreferences prefs = getSharedPreferences("ULearnItPrefs", MODE_PRIVATE);
+                    String savedEmail = prefs.getString("user_email", "");
+                    String savedPassword = prefs.getString("user_password", "");
+
+                    if (email.equals(savedEmail) && password.equals(savedPassword)) {
+                        // Navigate to Home Dashboard
+                        Intent intent = new Intent(MainActivity.this, HomeDashboardActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Invalid Email or Password", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

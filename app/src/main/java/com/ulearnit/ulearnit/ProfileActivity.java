@@ -3,7 +3,6 @@ package com.ulearnit.ulearnit;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +12,19 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        android.widget.TextView tvProfileName = findViewById(R.id.tvProfileName);
+        android.content.SharedPreferences prefs = getSharedPreferences("ULearnItPrefs", MODE_PRIVATE);
+        String fullName = prefs.getString("user_fullname", "Alex Rivera");
+        tvProfileName.setText(fullName);
+
+        android.widget.Button btnSignOut = findViewById(R.id.btnSignOut);
+        btnSignOut.setOnClickListener(v -> {
+            Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
 
         setupNavbar();
     }
@@ -33,7 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
         LinearLayout navHome = findViewById(R.id.navHome);
         LinearLayout navStyle = findViewById(R.id.navStyle);
         LinearLayout navWhatshot = findViewById(R.id.navWhatshot);
-        View btnNavAdd = findViewById(R.id.btnNavAdd);
+        android.view.View btnNavAdd = findViewById(R.id.btnNavAdd);
 
         navHome.setOnClickListener(v -> {
             Intent intent = new Intent(this, HomeDashboardActivity.class);

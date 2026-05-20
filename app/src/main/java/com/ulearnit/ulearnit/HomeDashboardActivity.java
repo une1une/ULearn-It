@@ -51,6 +51,16 @@ public class HomeDashboardActivity extends AppCompatActivity {
         SessionManager.startSession();
         updateRecentDeck();
         loadHomeDecks();
+
+        // Update greeting with user's name
+        TextView tvGreeting = findViewById(R.id.tvGreeting);
+        SharedPreferences prefs = getSharedPreferences("ULearnItPrefs", MODE_PRIVATE);
+        String fullName = prefs.getString("user_fullname", "");
+        if (!fullName.isEmpty()) {
+            // Get first name
+            String firstName = fullName.split(" ")[0];
+            tvGreeting.setText("Good Day, " + firstName + "!");
+        }
     }
 
     @Override

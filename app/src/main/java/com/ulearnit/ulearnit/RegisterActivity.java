@@ -54,8 +54,15 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                // TODO: Implement actual registration logic
-                Toast.makeText(RegisterActivity.this, "Account created!", Toast.LENGTH_SHORT).show();
+                // Save user data to SharedPreferences
+                android.content.SharedPreferences prefs = getSharedPreferences("ULearnItPrefs", MODE_PRIVATE);
+                android.content.SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("user_fullname", name);
+                editor.putString("user_email", email);
+                editor.putString("user_password", pass);
+                editor.apply();
+
+                Toast.makeText(RegisterActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

@@ -62,6 +62,11 @@ public class DeckAdapter extends RecyclerView.Adapter<DeckAdapter.DeckViewHolder
         return deckList.size();
     }
 
+    public void filterList(ArrayList<DeckModel> filteredList) {
+        this.deckList = filteredList;
+        notifyDataSetChanged();
+    }
+
     public static class DeckViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvCardCount, tvProgressPercent;
         ProgressBar pbProgress;
