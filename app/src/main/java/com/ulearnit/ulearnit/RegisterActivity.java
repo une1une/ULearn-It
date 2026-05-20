@@ -68,4 +68,16 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SessionManager.startSession();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SessionManager.endSession(this);
+    }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FAFAFA">
@@ -8,6 +9,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:clipToPadding="false"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation">
 
@@ -17,7 +19,6 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- Title and Filter -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -31,7 +32,6 @@
                     android:textColor="@color/black"/>
             </RelativeLayout>
 
-            <!-- Search Bar -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -55,7 +55,6 @@
                     android:inputType="text"/>
             </LinearLayout>
 
-            <!-- Chips -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,7 +66,6 @@
                     android:orientation="horizontal"/>
             </HorizontalScrollView>
 
-            <!-- Decks List -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewDecks"
                 android:layout_width="match_parent"
@@ -78,7 +76,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- FAB -->
     <Button
         android:id="@+id/btnCreateDeck"
         android:layout_width="wrap_content"
@@ -94,7 +91,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:paddingHorizontal="24dp"/>
 
-    <!-- Bottom Navigation Mockup -->
     <LinearLayout
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
@@ -104,31 +100,108 @@
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <LinearLayout android:id="@+id/navHome" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_today"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="HOME" android:textSize="10sp" android:textColor="@color/gray_text"/>
+        <LinearLayout
+            android:id="@+id/navHome"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/home" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HOME"
+                android:textSize="10sp"
+                android:textColor="@color/gray_text"/>
         </LinearLayout>
 
-        <LinearLayout android:id="@+id/navWhatshot" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_compass"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="WHATSHOT" android:textSize="10sp"/>
+        <LinearLayout
+            android:id="@+id/navWhatshot"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/levels" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PROGRESS"
+                android:textColor="@color/gray_text"
+                android:textSize="10sp" />
         </LinearLayout>
 
-        <View
+        <ImageView
+            android:id="@+id/btnNavAdd"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/circle_border_blue"
-            android:backgroundTint="#3370FD"
-            android:foreground="@android:drawable/ic_input_add" />
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/plus"
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="12dp"
+            android:src="@android:drawable/ic_input_add"
+            app:tint="@color/white" />
 
-        <LinearLayout android:id="@+id/navStyle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_manage" app:tint="@color/primary_blue"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="STYLE" android:textSize="10sp" android:textColor="@color/primary_blue"/>
+        <LinearLayout
+            android:id="@+id/navStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/card" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DECKS"
+                android:textColor="@color/primary_blue"
+                android:textSize="10sp" />
         </LinearLayout>
 
-        <LinearLayout android:id="@+id/navProfile" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@android:drawable/ic_menu_myplaces"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="PERSON" android:textSize="10sp"/>
+        <LinearLayout
+            android:id="@+id/navProfile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless">
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/prof" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PROFILE"
+                android:textColor="@color/gray_text"
+                android:textSize="10sp" />
         </LinearLayout>
 
     </LinearLayout>

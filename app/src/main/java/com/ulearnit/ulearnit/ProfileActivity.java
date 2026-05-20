@@ -3,6 +3,7 @@ package com.ulearnit.ulearnit;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,10 +17,23 @@ public class ProfileActivity extends AppCompatActivity {
         setupNavbar();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SessionManager.startSession();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SessionManager.endSession(this);
+    }
+
     private void setupNavbar() {
         LinearLayout navHome = findViewById(R.id.navHome);
         LinearLayout navStyle = findViewById(R.id.navStyle);
         LinearLayout navWhatshot = findViewById(R.id.navWhatshot);
+        View btnNavAdd = findViewById(R.id.btnNavAdd);
 
         navHome.setOnClickListener(v -> {
             Intent intent = new Intent(this, HomeDashboardActivity.class);
@@ -36,6 +50,13 @@ public class ProfileActivity extends AppCompatActivity {
 
         navWhatshot.setOnClickListener(v -> {
             startActivity(new Intent(this, ProgressActivity.class));
+            overrideTransition();
+        });
+
+        btnNavAdd.setOnClickListener(v -> {
+            Intent intent = new Intent(this, DecksActivity.class);
+            intent.putExtra("OPEN_CREATE_DIALOG", true);
+            startActivity(intent);
             overrideTransition();
         });
     }

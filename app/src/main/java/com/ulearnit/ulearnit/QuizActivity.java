@@ -80,6 +80,18 @@ public class QuizActivity extends AppCompatActivity {
         showQuestion();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SessionManager.startSession();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SessionManager.endSession(this);
+    }
+
     private void showQuestion() {
         isFirstTry = true;
         FlashcardModel currentCard = flashcardList.get(currentQuestionIndex);

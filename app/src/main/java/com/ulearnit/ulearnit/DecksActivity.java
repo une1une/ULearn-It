@@ -41,10 +41,19 @@ public class DecksActivity extends AppCompatActivity {
         rvDecks = findViewById(R.id.recyclerViewDecks);
         btnCreateDeck = findViewById(R.id.btnCreateDeck);
 
-        loadDecks();
-
-        adapter = new DeckAdapter(deckList);
         rvDecks.setLayoutManager(new LinearLayoutManager(this));
+
+        btnCreateDeck.setOnClickListener(v -> showCreateDeckDialog());
+
+        setupNavbar();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SessionManager.startSession();
+        loadDecks();
+        adapter = new DeckAdapter(deckList);
         rvDecks.setAdapter(adapter);
 
         adapter.setOnItemClickListener(deck -> {
@@ -53,9 +62,17 @@ public class DecksActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        btnCreateDeck.setOnClickListener(v -> showCreateDeckDialog());
+        // Check for shortcut trigger
+        if (getIntent().getBooleanExtra("OPEN_CREATE_DIALOG", false)) {
+            showCreateDeckDialog();
+            getIntent().removeExtra("OPEN_CREATE_DIALOG");
+        }
+    }
 
-        setupNavbar();
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SessionManager.endSession(this);
     }
 
     private void loadDecks() {
@@ -135,6 +152,7 @@ public class DecksActivity extends AppCompatActivity {
         LinearLayout navHome = findViewById(R.id.navHome);
         LinearLayout navProfile = findViewById(R.id.navProfile);
         LinearLayout navWhatshot = findViewById(R.id.navWhatshot);
+        View btnNavAdd = findViewById(R.id.btnNavAdd);
 
         navHome.setOnClickListener(v -> {
             Intent intent = new Intent(DecksActivity.this, HomeDashboardActivity.class);
@@ -154,6 +172,8 @@ public class DecksActivity extends AppCompatActivity {
             startActivity(intent);
             overrideTransition();
         });
+
+        btnNavAdd.setOnClickListener(v -> showCreateDeckDialog());
     }
 
     private void overrideTransition() {

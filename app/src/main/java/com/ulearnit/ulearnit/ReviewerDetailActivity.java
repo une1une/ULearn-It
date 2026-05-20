@@ -75,6 +75,18 @@ public class ReviewerDetailActivity extends AppCompatActivity {
         btnBack.setOnClickListener(v -> finish());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SessionManager.startSession();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SessionManager.endSession(this);
+    }
+
     private void updateEmptyState() {
         if (flashcardList.isEmpty()) {
             tvEmptyState.setVisibility(View.VISIBLE);

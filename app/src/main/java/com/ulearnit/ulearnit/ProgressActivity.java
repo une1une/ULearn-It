@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import android.view.ViewGroup;
+import java.util.Calendar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,14 +33,54 @@ public class ProgressActivity extends AppCompatActivity {
         setContentView(R.layout.activity_progress);
 
         rvSubjectMastery = findViewById(R.id.rvSubjectMastery);
-        
-        loadDecks();
-
-        adapter = new SubjectMasteryAdapter(deckList);
         rvSubjectMastery.setLayoutManager(new LinearLayoutManager(this));
-        rvSubjectMastery.setAdapter(adapter);
 
         setupNavbar();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SessionManager.startSession();
+        updateStudyActivityChart();
+        
+        loadDecks();
+        adapter = new SubjectMasteryAdapter(deckList);
+        rvSubjectMastery.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SessionManager.endSession(this);
+    }
+
+    private void updateStudyActivityChart() {
+        float maxGoalHours = 4.0f;
+        int maxBarHeightPx = (int) (120 * getResources().getDisplayMetrics().density);
+
+        android.view.View[] bars = {
+            findViewById(R.id.barSun),
+            findViewById(R.id.barMon),
+            findViewById(R.id.barTue),
+            findViewById(R.id.barWed),
+            findViewById(R.id.barThu),
+            findViewById(R.id.barFri),
+            findViewById(R.id.barSat)
+        };
+
+        for (int i = 0; i < 7; i++) {
+            if (bars[i] == null) continue;
+            float hours = SessionManager.getDailyHours(this, i + 1);
+            int height = (int) ((hours / maxGoalHours) * maxBarHeightPx);
+            
+            if (height > maxBarHeightPx) height = maxBarHeightPx;
+            if (height < (int)(4 * getResources().getDisplayMetrics().density)) height = (int)(4 * getResources().getDisplayMetrics().density);
+
+            android.view.ViewGroup.LayoutParams params = bars[i].getLayoutParams();
+            params.height = height;
+            bars[i].setLayoutParams(params);
+        }
     }
 
     private void loadDecks() {
@@ -68,6 +110,7 @@ public class ProgressActivity extends AppCompatActivity {
         LinearLayout navWhatshot = findViewById(R.id.navWhatshot);
         LinearLayout navStyle = findViewById(R.id.navStyle);
         LinearLayout navProfile = findViewById(R.id.navProfile);
+        android.view.View btnNavAdd = findViewById(R.id.btnNavAdd);
 
         navHome.setOnClickListener(v -> {
             Intent intent = new Intent(this, HomeDashboardActivity.class);
@@ -84,6 +127,13 @@ public class ProgressActivity extends AppCompatActivity {
 
         navProfile.setOnClickListener(v -> {
             Intent intent = new Intent(this, ProfileActivity.class);
+            startActivity(intent);
+            overrideTransition();
+        });
+
+        btnNavAdd.setOnClickListener(v -> {
+            Intent intent = new Intent(this, DecksActivity.class);
+            intent.putExtra("OPEN_CREATE_DIALOG", true);
             startActivity(intent);
             overrideTransition();
         });

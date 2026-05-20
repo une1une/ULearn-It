@@ -48,8 +48,15 @@ public class HomeDashboardActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        SessionManager.startSession();
         updateRecentDeck();
         loadHomeDecks();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SessionManager.endSession(this);
     }
 
     private void updateRecentDeck() {
@@ -118,6 +125,7 @@ public class HomeDashboardActivity extends AppCompatActivity {
         LinearLayout navProfile = findViewById(R.id.navProfile);
         LinearLayout navStyle = findViewById(R.id.navStyle);
         LinearLayout navWhatshot = findViewById(R.id.navWhatshot);
+        View btnNavAdd = findViewById(R.id.btnNavAdd);
 
         navProfile.setOnClickListener(v -> {
             startActivity(new Intent(this, ProfileActivity.class));
@@ -131,6 +139,13 @@ public class HomeDashboardActivity extends AppCompatActivity {
 
         navWhatshot.setOnClickListener(v -> {
             startActivity(new Intent(this, ProgressActivity.class));
+            overrideTransition();
+        });
+
+        btnNavAdd.setOnClickListener(v -> {
+            Intent intent = new Intent(this, DecksActivity.class);
+            intent.putExtra("OPEN_CREATE_DIALOG", true);
+            startActivity(intent);
             overrideTransition();
         });
     }
