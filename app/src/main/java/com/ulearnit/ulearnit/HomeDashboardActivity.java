@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +26,8 @@ public class HomeDashboardActivity extends AppCompatActivity {
     private RecyclerView rvDecksHome;
     private HomeDeckAdapter adapter;
     private ArrayList<DeckModel> deckList;
+    private CardView cardFeatureDeck;
+    private String currentActiveDeckTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +39,20 @@ public class HomeDashboardActivity extends AppCompatActivity {
         courseProgress = findViewById(R.id.courseProgress);
         tvSeeAllDecks = findViewById(R.id.tvSeeAllDecks);
         rvDecksHome = findViewById(R.id.rvDecksHome);
+        cardFeatureDeck = findViewById(R.id.cardFeatureDeck);
 
         tvSeeAllDecks.setOnClickListener(v -> {
             startActivity(new Intent(this, DecksActivity.class));
             overrideTransition();
+        });
+
+        // Quick-start quiz navigation
+        cardFeatureDeck.setOnClickListener(v -> {
+            if (currentActiveDeckTitle != null) {
+                Intent intent = new Intent(HomeDashboardActivity.this, QuizActivity.class);
+                intent.putExtra("DECK_TITLE", currentActiveDeckTitle);
+                startActivity(intent);
+            }
         });
 
         setupNavbar();
@@ -75,16 +88,20 @@ public class HomeDashboardActivity extends AppCompatActivity {
         int recentPercent = prefs.getInt("recent_deck_percent", 0);
 
         if (recentTitle != null) {
+            currentActiveDeckTitle = recentTitle;
             tvCourseTitle.setText(recentTitle);
             tvProgressPercent.setText(String.format(java.util.Locale.getDefault(), "%d%%", recentPercent));
             courseProgress.setProgress(recentPercent);
             findViewById(R.id.tvModuleInfo).setVisibility(View.VISIBLE);
             ((TextView)findViewById(R.id.tvModuleInfo)).setText("Recent Study Session");
+            cardFeatureDeck.setEnabled(true);
         } else {
+            currentActiveDeckTitle = null;
             tvCourseTitle.setText("No quizzes taken yet");
             tvProgressPercent.setText("0%");
             courseProgress.setProgress(0);
             findViewById(R.id.tvModuleInfo).setVisibility(View.GONE);
+            cardFeatureDeck.setEnabled(false);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.ulearnit.ulearnit;
 
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,14 +54,29 @@ public class QuizActivity extends AppCompatActivity {
         ImageView btnBack = findViewById(R.id.btnBack);
 
         String jsonList = getIntent().getStringExtra("FLASHCARD_LIST_JSON");
-        
+        String deckTitle = getIntent().getStringExtra("DECK_TITLE");
+        Gson gson = new Gson();
+
         if (jsonList != null) {
-            Gson gson = new Gson();
             Type type = new TypeToken<ArrayList<FlashcardModel>>() {}.getType();
             flashcardList = gson.fromJson(jsonList, type);
-            Collections.shuffle(flashcardList);
+        } else if (deckTitle != null) {
+            SharedPreferences prefs = getSharedPreferences("ULearnItPrefs", MODE_PRIVATE);
+            String flashcardsKey = "_flashcards_" + deckTitle;
+            String flashcardsJson = prefs.getString(flashcardsKey, null);
+            if (flashcardsJson != null) {
+                Type type = new TypeToken<ArrayList<FlashcardModel>>() {}.getType();
+                flashcardList = gson.fromJson(flashcardsJson, type);
+            }
         }
 
+        if (flashcardList == null || flashcardList.isEmpty()) {
+            Toast.makeText(this, "No flashcards found for this deck.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        Collections.shuffle(flashcardList);
         btnBack.setOnClickListener(v -> finish());
 
         // Set click listeners for immediate feedback
@@ -103,12 +120,19 @@ public class QuizActivity extends AppCompatActivity {
         List<String> choices = new ArrayList<>();
         choices.add(correctAnswer);
 
+        // Logic for generating wrong options
         List<FlashcardModel> others = new ArrayList<>(flashcardList);
         others.remove(currentCard);
         Collections.shuffle(others);
         
+        // Add up to 3 wrong answers from other cards
         for (int i = 0; i < Math.min(3, others.size()); i++) {
             choices.add(others.get(i).getAnswer());
+        }
+
+        // If not enough cards for 4 choices, add generic ones or handle gracefully
+        while (choices.size() < 4) {
+            choices.add("Option " + (choices.size() + 1));
         }
 
         Collections.shuffle(choices);
@@ -170,7 +194,7 @@ public class QuizActivity extends AppCompatActivity {
 
         new AlertDialog.Builder(this)
                 .setTitle("Quiz Completed!")
-                .setMessage(String.format(Locale.getDefault(), "You scored %d out of %d", score, flashcardList.size(), percentage))
+                .setMessage(String.format(Locale.getDefault(), "You scored %d out of %d (%d%%)", score, flashcardList.size(), percentage))
                 .setPositiveButton("OK", (dialog, which) -> finish())
                 .setCancelable(false)
                 .show();
