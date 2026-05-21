@@ -1,9 +1,11 @@
 package com.ulearnit.ulearnit;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -14,16 +16,26 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         android.widget.TextView tvProfileName = findViewById(R.id.tvProfileName);
-        android.content.SharedPreferences prefs = getSharedPreferences("ULearnItPrefs", MODE_PRIVATE);
+        SharedPreferences prefs = getSharedPreferences("ULearnItPrefs", MODE_PRIVATE);
         String fullName = prefs.getString("user_fullname", "Alex Rivera");
         tvProfileName.setText(fullName);
 
+        // Settings Navigation
+        RelativeLayout itemSettings = findViewById(R.id.itemSettings);
+        itemSettings.setOnClickListener(v -> {
+            startActivity(new Intent(ProfileActivity.this, SettingsActivity.class));
+        });
+
+        // Sign Out Logic
         android.widget.Button btnSignOut = findViewById(R.id.btnSignOut);
         btnSignOut.setOnClickListener(v -> {
+            // Clear logged-in session
+            prefs.edit().putBoolean("is_logged_in", false).apply();
+
             Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-            finish();
+            finishAffinity(); // Prevent back navigation
         });
 
         setupNavbar();

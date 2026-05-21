@@ -20,6 +20,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Auto-login check
+        android.content.SharedPreferences prefs = getSharedPreferences("ULearnItPrefs", MODE_PRIVATE);
+        if (prefs.getBoolean("is_logged_in", false)) {
+            startActivity(new Intent(this, HomeDashboardActivity.class));
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_main);
 
         etEmail = findViewById(R.id.etEmail);
@@ -37,11 +46,13 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Please enter email and password", Toast.LENGTH_SHORT).show();
                 } else {
                     // Load saved credentials
-                    android.content.SharedPreferences prefs = getSharedPreferences("ULearnItPrefs", MODE_PRIVATE);
                     String savedEmail = prefs.getString("user_email", "");
                     String savedPassword = prefs.getString("user_password", "");
 
                     if (email.equals(savedEmail) && password.equals(savedPassword)) {
+                        // Save login state
+                        prefs.edit().putBoolean("is_logged_in", true).apply();
+
                         // Navigate to Home Dashboard
                         Intent intent = new Intent(MainActivity.this, HomeDashboardActivity.class);
                         startActivity(intent);

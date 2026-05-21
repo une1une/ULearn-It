@@ -52,12 +52,14 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/circle_border_blue"/>
+
                         <ImageView
                             android:layout_width="90dp"
                             android:layout_height="90dp"
                             android:layout_gravity="center"
-                            android:src="@android:drawable/ic_menu_report_image"
-                            android:scaleType="centerCrop"/>
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/user" />
+
                         <View
                             android:layout_width="15dp"
                             android:layout_height="15dp"
@@ -71,124 +73,14 @@
                         android:id="@+id/tvProfileName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Alex Rivera"
-                        android:textSize="22sp"
-                        android:textStyle="bold"
+                        android:layout_marginTop="16dp"
+                        android:text="First Last"
                         android:textColor="@color/black"
-                        android:layout_marginTop="16dp"/>
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Level 24 Scholar"
-                        android:textSize="14sp"
-                        android:textColor="@color/gray_text"
-                        android:layout_marginTop="4dp"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="24dp"
-                        android:gravity="center">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1.2k" android:textStyle="bold" android:textSize="18sp" android:textColor="@color/black"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="XP Points" android:textSize="12sp" android:textColor="@color/gray_text"/>
-                        </LinearLayout>
-
-                        <View android:layout_width="1dp" android:layout_height="30dp" android:background="#F0F0F0"/>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="85%" android:textStyle="bold" android:textSize="18sp" android:textColor="@color/black"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mastery" android:textSize="12sp" android:textColor="@color/gray_text"/>
-                        </LinearLayout>
-
-                        <View android:layout_width="1dp" android:layout_height="30dp" android:background="#F0F0F0"/>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:gravity="center">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="12" android:textStyle="bold" android:textSize="18sp" android:textColor="@color/black"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Streak" android:textSize="12sp" android:textColor="@color/gray_text"/>
-                        </LinearLayout>
-                    </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Learning Experience"
-                android:textStyle="bold"
-                android:textColor="@color/gray_text"
-                android:layout_marginTop="32dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/rounded_card_bg"
-                android:padding="8dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:padding="12dp">
-                    <FrameLayout android:id="@+id/icon1" android:layout_width="40dp" android:layout_height="40dp" android:background="@color/icon_orange_bg">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_gravity="center" android:src="@android:drawable/ic_popup_reminder" app:tint="#FF9800"/>
-                    </FrameLayout>
-                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_toEndOf="@id/icon1" android:layout_marginStart="16dp" android:layout_centerVertical="true">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Notifications" android:textStyle="bold" android:textColor="@color/black"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Manage your study reminders" android:textSize="12sp" android:textColor="@color/gray_text"/>
-                    </LinearLayout>
-                    <TextView android:layout_width="20dp" android:layout_height="20dp" android:background="@color/primary_green" android:text="3" android:textColor="@color/white" android:gravity="center" android:textSize="10sp" android:layout_toStartOf="@id/arrow1" android:layout_centerVertical="true" android:layout_marginEnd="16dp"/>
-                    <ImageView android:id="@+id/arrow1" android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_next" android:layout_alignParentEnd="true" android:layout_centerVertical="true" app:tint="@color/gray_text"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:padding="12dp">
-                    <FrameLayout android:id="@+id/icon2" android:layout_width="40dp" android:layout_height="40dp" android:background="@color/icon_green_bg">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_gravity="center" android:src="@android:drawable/checkbox_on_background" app:tint="#4CAF50"/>
-                    </FrameLayout>
-                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_toEndOf="@id/icon2" android:layout_marginStart="16dp" android:layout_centerVertical="true">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Offline Library" android:textStyle="bold" android:textColor="@color/black"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="12 decks downloaded" android:textSize="12sp" android:textColor="@color/gray_text"/>
-                    </LinearLayout>
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_next" android:layout_alignParentEnd="true" android:layout_centerVertical="true" app:tint="@color/gray_text"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:padding="12dp">
-                    <FrameLayout android:id="@+id/icon4" android:layout_width="40dp" android:layout_height="40dp" android:background="@color/icon_purple_bg">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_gravity="center" android:src="@android:drawable/btn_star_big_on" app:tint="#9C27B0"/>
-                    </FrameLayout>
-                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_toEndOf="@id/icon4" android:layout_marginStart="16dp" android:layout_centerVertical="true">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Achievements" android:textStyle="bold" android:textColor="@color/black"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Unlock new badges" android:textSize="12sp" android:textColor="@color/gray_text"/>
-                    </LinearLayout>
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_next" android:layout_alignParentEnd="true" android:layout_centerVertical="true" app:tint="@color/gray_text"/>
-                </RelativeLayout>
-
-            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -207,31 +99,26 @@
                 android:padding="8dp">
 
                 <RelativeLayout
+                    android:id="@+id/itemSettings"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
-                    android:padding="12dp">
-                    <FrameLayout android:id="@+id/icon3" android:layout_width="40dp" android:layout_height="40dp" android:background="@color/icon_blue_bg">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_gravity="center" android:src="@android:drawable/ic_menu_slideshow" app:tint="#2196F3"/>
-                    </FrameLayout>
-                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_toEndOf="@id/icon3" android:layout_marginStart="16dp" android:layout_centerVertical="true">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Subscription" android:textStyle="bold" android:textColor="@color/black"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ULearn Pro • Renew in 5 days" android:textSize="12sp" android:textColor="@color/gray_text"/>
-                    </LinearLayout>
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_next" android:layout_alignParentEnd="true" android:layout_centerVertical="true" app:tint="@color/gray_text"/>
-                </RelativeLayout>
+                    android:padding="12dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackground">
+                    <FrameLayout android:id="@+id/iconSettings" android:layout_width="40dp" android:layout_height="40dp" android:background="@color/icon_gray_bg">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:padding="12dp">
-                    <FrameLayout android:id="@+id/icon5" android:layout_width="40dp" android:layout_height="40dp" android:background="@color/icon_gray_bg">
-                        <ImageView android:layout_width="24dp" android:layout_height="24dp" android:layout_gravity="center" android:src="@android:drawable/ic_lock_idle_lock" app:tint="#607D8B"/>
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/setting"
+                            app:tint="@color/black" />
                     </FrameLayout>
-                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_toEndOf="@id/icon5" android:layout_marginStart="16dp" android:layout_centerVertical="true">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Privacy Settings" android:textStyle="bold" android:textColor="@color/black"/>
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Control your visibility" android:textSize="12sp" android:textColor="@color/gray_text"/>
+                    <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="vertical" android:layout_toEndOf="@id/iconSettings" android:layout_marginStart="16dp" android:layout_centerVertical="true">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Settings" android:textStyle="bold" android:textColor="@color/black"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Profile and account details" android:textSize="12sp" android:textColor="@color/gray_text"/>
                     </LinearLayout>
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp" android:src="@android:drawable/ic_media_next" android:layout_alignParentEnd="true" android:layout_centerVertical="true" app:tint="@color/gray_text"/>
                 </RelativeLayout>
 
             </LinearLayout>
@@ -242,12 +129,12 @@
                 android:layout_height="56dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="32dp"
-                android:background="@drawable/rounded_edittext_white"
+                android:background="@color/black"
                 android:text="Sign Out"
                 android:textAllCaps="false"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textStyle="bold"
-                app:backgroundTint="@null"/>
+                app:backgroundTint="@null" />
 
         </LinearLayout>
     </ScrollView>

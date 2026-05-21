@@ -18,6 +18,7 @@ public class DeckModel {
     }
 
     public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
     public int getCardCount() { return cardCount; }
     public void setCardCount(int cardCount) { this.cardCount = cardCount; }
     public int getProgress() { return progress; }
